@@ -128,6 +128,8 @@ const signin = async (req, res) => {
   }
 };
 
+
+
 const signout = (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
@@ -137,4 +139,28 @@ const signout = (req, res) => {
   res.json({ message: 'Sign out successful' });
 };
 
-module.exports = { googleAuth, signup, checkAuth, signin, signout };
+
+const getMe = async (req, res) => {
+  try {
+    
+    const userId = req.user.userId;
+
+    
+    const user = await User.findById(userId).select("-password"); 
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      message: "User data fetched successfully",
+      user,
+    });
+  } catch (error) {
+    console.error(error); // log to see the real issue
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
+module.exports = { googleAuth, signup, checkAuth, signin, signout, getMe };

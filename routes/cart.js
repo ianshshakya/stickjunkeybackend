@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.use(authenticateToken);
 
-router.get('/', getCart);
+router.get('/item', getCart);
 router.post('/:itemId', addToCart);
 router.put('/:itemId', updateCartItem);
 router.delete('/:itemId', removeFromCart);
